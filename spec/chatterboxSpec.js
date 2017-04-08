@@ -7,7 +7,6 @@ describe('chatterbox', function() {
     it('should have a method called init', function() {
       expect(app.init).to.be.ok;
     });
-
   });
 
   describe('app behavior', function() {
@@ -60,8 +59,10 @@ describe('chatterbox', function() {
       it('should submit a GET request via $.ajax', function(done) {
         app.fetch();
         expect($.ajax.calledOnce).to.be.true;
+        //console.log($.ajax.args[0][0].url);
         ajaxUrl = typeof $.ajax.args[0][0] === 'string' ? $.ajax.args[0][0] : $.ajax.args[0][0].url;
         expect(ajaxUrl).to.equal(app.server);
+
         done();
       });
 
