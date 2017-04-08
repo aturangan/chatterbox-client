@@ -1,6 +1,24 @@
 
 
+$(document).ready(function(){
+	//put the data (from the global variable) into the message panels
+	$(".submit").click(function(){
+		// console.log("button");
+	  
+  });
 
+	$(".dropdown-menu").click('.link', function(event){
+		//store the exact room that was clicked 
+		clearMessages(); 
+		var selectedRoom= event.toElement.innerHTML;
+		event.preventDefault(); 
+		filterMessages(selectedRoom);
+		
+		
+		//get the messages for the specific room name 
+	
+  });
+});
 
 
 //now we need to create the message panels
@@ -40,36 +58,18 @@ ajaxPost= function (messageObject) {
 	});
 }
 
-	$("button").click(function(){
-	    	getData();
-  });
 
 
 
 var ajaxFetch = function() {
 	$.get('http://parse.sfm6.hackreactor.com/chatterbox/classes/messages/', function(data, status) {
+	  console.log(data)
+
+     // data =datas
      allMessages(data);
      
 	});
 }
-
-
-//put the data (from the global variable) into the message panels 
-
-/**************Display each message function**********************/
-$.fn.loadMessages=function(Messages){
-  var innerHTML = "";
-  var message= "Hello";
-  var user= "ABC";
-  //Formatting each tweet as blockquote and formatting other details     
-        
-  var newMessage = "<tr><td><blockquote><p>" + message +'<small> @<a class ="username">'
-                   + user +"</a></small></p></blockquote></tr></td>";
-  innerHTML += newMessage;  
-  console.log(Messages);
-  return this.html(innerHTML);
- };
-$("table#dynamicTable").loadMessages();
 
 
 
@@ -90,9 +90,29 @@ function clearMessages(){
 	$("#chats").empty();
 }
 
-function allMessages(messageArray){
-		var lobbyMessages= messageArray.results.filter(function(eachMessage){
-		return eachMessage.roomname === "lobby";
+//tuple or object and add it into allMessages function 
+//refer to eachMessage.roomname by (roomname, id); 
+
+function allMessages(messageArray,roomName){
+	//Logic to get extract unique roomnames from the array and feed each to renderRoom function
+	data= messageArray;
+	console.log(messageArray);
+	var roomArray = messageArray.results.map(function(eachMessage){
+		return eachMessage.roomname;
+	});
+	roomArray = _.uniq(roomArray);
+	//console.log(roomArray);
+	roomArray.forEach(function(room){
+		renderRoom(room);
+	})
+}
+
+	//Logic to  filter messages from the array of Messages, based on roomName and feed to renderMessage function
+	function filterMessages(roomName){
+		var messageArray = data;  
+		console.log(messageArray);
+	var lobbyMessages= messageArray.results.filter(function(eachMessage){
+		return eachMessage.roomname === roomName;
 	});
 	for (var i = 0; i < lobbyMessages.length; i++) {
 		renderMessage(lobbyMessages[i]);
@@ -104,18 +124,45 @@ function renderMessage(message){
 	var innerHTML = "";
 	//console.log()	
 
-		var newMessage = "<tr><td><blockquote><p>" + message.text +'<small> @<a class ="username">' 
-		+ message.username+ "</a></small></p></blockquote></tr></td>";
-	                    ;
-		$("#chats").append(newMessage); 
+		var newMessage = $(/*"<tr><td><blockquote><p>*/ "</p></blockquote></td></tr>");
+		var userName = $('<small> @<a class ="username"> </a></small>')
+		userName.text(message.username);
 
+		newMessage.text(message.text).append(userName);
+		/*newMessage +'<small> @<a class ="username">' 
+		+ message.username+ "</a></small></p></blockquote></tr></td>";*/
+	          
+		$("#chats").append(newMessage); 
 	}
 
-
+// done( function( data ) {
+//     var a = jQuery( '<a />' );
+//     a.attr( 'href', data.url );
+//     a.text( data.title );
+ 
+//     jQuery( '#my-div' ).append( a );
 
 function renderRoom(roomName){
-	var newRoom= "<li><a href='#'>"+ roomName+ "</a></li>";
-	$("#roomSelect").append(newRoom);
+
+	if (roomName !== undefined) {
+		//var newRoom= "<li class='link' " + roomName +"><a href='#'>"+ roomName+ "</a></li>";
+		//var newRoom= "<li class='link'><a href='#'>"+ roomName+ "</a></li>";
+	 var newRoom= $("<li class='link'><a href='#'> </a></li>");
+	  newRoom.text(roomName);
+
+// var a = jQuery( '<a />' );
+//     a.attr( 'href', data.url );
+//     a.text( data.title );
+ 
+//     jQuery( '#my-div' ).append( a );
+
+
+
+
+
+		//  newRoom.addClass(roomName);
+		$("#roomSelect").append(newRoom);
+	}
 }
 
 
@@ -157,3 +204,4 @@ var Chatterbox = function() {
 app.fetch();
 
 //console.log('SERVER DATA', data); 
+

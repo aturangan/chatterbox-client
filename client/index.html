@@ -9,7 +9,8 @@
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src-="">
       // YOU DO NOT NEED TO EDIT THIS CODE
       if (!/(&|\?)username=/.test(window.location.search)) {
         var newSearch = window.location.search;
@@ -33,10 +34,11 @@
         <div class="dropdown">
           <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Room
           <span class="caret"></span></button>
+          
           <ul class="dropdown-menu" id= "roomSelect">
-            <li><a href="#">HTML</a></li>
-            <li><a href="#">CSS</a></li>
-          <li><a href="#">JavaScript</a></li>
+
+          <!--specific rooms -->
+          
         </ul>
       </div>
     </div>
@@ -49,7 +51,9 @@
         <input type="text" class="form-control" id="usr">
         </div>
         <div class = "col-xs-4">
-        <button type="button" class="btn btn-primary">Submit</button>
+        <button type="button" class=" submit btn btn-primary">Submit</button>
+
+        <!--CHANGED CODE ON 54-->
         </div>
 
     </div>
